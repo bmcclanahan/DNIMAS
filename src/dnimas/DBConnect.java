@@ -24,7 +24,7 @@ public class DBConnect {
 	    DBConnect(){
 	      try{
 		     Class.forName("com.mysql.jdbc.Driver");
-		     con = DriverManager.getConnection("jdbc:mysql://169.254.194.145:3306/DNIMAS","root","Summer09");
+		     con = DriverManager.getConnection("jdbc:mysql://"+connection.ipMySql +":"+connection.portMySql+"/"+connection.dataBase,connection.usernameMySql,connection.passwordMySql);
 		     st = con.createStatement();
 		  }
 		  catch(Exception ex){

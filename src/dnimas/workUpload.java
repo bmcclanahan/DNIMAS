@@ -182,8 +182,8 @@ public class workUpload extends javax.swing.JFrame {
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
         // TODO add your handling code here:
         try{
-	   ftp.connect("169.254.194.145",21);
-	   boolean test = ftp.login("bmcclanahan", "clanin22");
+	   ftp.connect(connection.ipFTP,connection.portFTP);
+	   boolean test = ftp.login(connection.usernameFTP, connection.passwordFTP);
 	   if(test)
 	   {
 	      System.out.println("Connected");
