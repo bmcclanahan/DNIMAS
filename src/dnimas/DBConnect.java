@@ -71,20 +71,33 @@ public class DBConnect {
 			  rs.next();
 			  int id = rs.getInt("user_id");
 			  int status = rs.getInt("user_status");
-			  if(status != 1){
+                          String[] timeCheckEnd = time.substring(11,16).split(":");
+                          Integer hour = Integer.parseInt(timeCheckEnd[0]);
+                          Integer minute = Integer.parseInt(timeCheckEnd[1]);
+                          Integer second;
+                          int checkTime = hour*60+minute;
+                          System.out.println("what is the check time up here "+checkTime);
+                          if(checkTime <= 30000)//1140
+                          {
+			     if(status != 1){
 				 query = "UPDATE users SET user_date = \'" + time + "\' WHERE user_name = \'" + userID +" \' ";
 				 st.executeUpdate(query);
 				 query = "UPDATE users SET user_status = 1 WHERE user_name = \'" + userID + "\'";
 				 st.executeUpdate(query);
-			     query = "INSERT INTO posts(post_date,post_startTime,post_startDouble,post_by) VALUES( +\'" +time +"\',\'" + time+ "\',"+time2+","+id+")";
-			     st.executeUpdate(query);
-			     whatHappened = "success";
-			  }
-			  else
-			  {
+			         query = "INSERT INTO posts(post_date,post_startTime,post_startDouble,post_by) VALUES( +\'" +time +"\',\'" + time+ "\',"+time2+","+id+")";
+			         st.executeUpdate(query);
+			         whatHappened = "success";
+			     }
+			     else
+			     {
 				  whatHappened = "fail";
-			  }
-
+		  	     }
+                        }
+                        else
+                        {
+                              JOptionPane.showMessageDialog(null, "Nahhh...It's to late.");
+                              whatHappened = "fail2"; 
+                        }
 
 			  return whatHappened;
 		}
@@ -95,34 +108,53 @@ public class DBConnect {
 			  int status = rs.getInt("user_status");
 			  int id = rs.getInt("user_id");
 			  String startString = rs.getString("user_date");
-			  startString = startString.substring(0,19);
-			  System.out.println(startString);
-			  if(status == 1)
-			  {
-			     query = "SELECT * FROM posts WHERE post_by =" + id + " AND post_date = \'" + startString +"\'";
-			     System.out.println(query);
-			     rs = st.executeQuery(query);
-			     rs.next();
-			     Double startDouble = rs.getDouble("post_startDouble");
-			     Double duration = Math.floor(time2 - startDouble);
-			     DecimalFormat twoDForm = new DecimalFormat("#.##");
-                             System.out.println("what is the duration " + duration);
-			     query = "UPDATE posts SET post_endTime = \'" + time + "\' WHERE post_by =" + id + " AND post_date = \'" + startString +"\'";
-			     st.executeUpdate(query);
-			     query = "UPDATE posts SET post_duration =" + twoDForm.format(duration/3600)+ " WHERE post_by =" + id + " AND post_date =\'" + startString +"\'";
-			     System.out.println(query);
-			     st.executeUpdate(query);
-			     query = "UPDATE users SET user_status = 0 WHERE user_name = \'" + userID + "\'";
-                             st.executeUpdate(query);
-                             return duration/3600;
-			  }
-			  else{
-				  JOptionPane.showMessageDialog(null, "You are not logged in " );
-
-			     return 1;
-			  }
-
-
+                          String[] timeCheckEnd = time.substring(11,16).split(":");
+                          Integer hour = Integer.parseInt(timeCheckEnd[0]);
+                          Integer minute = Integer.parseInt(timeCheckEnd[1]);
+                          Integer second;
+                          int checkTime = hour*60+minute;
+                          System.out.println("checkTime "+checkTime );
+                          if(checkTime>-1)//1199
+                          {
+                             startString = startString.substring(0, 19);
+			     System.out.println(startString);
+			     if(status == 1)
+			     {
+			        query = "SELECT * FROM posts WHERE post_by =" + id + " AND post_date = \'" + startString +"\'";
+			        System.out.println(query);
+			        rs = st.executeQuery(query);
+			        rs.next();
+                                String[] beginTime = startString.substring(11,19).split(":");
+                                hour = Integer.parseInt(beginTime[0]);
+                                minute = Integer.parseInt(beginTime[1]);
+                                second = Integer.parseInt(beginTime[2]);
+                                checkTime = hour*60+minute;
+                                Double duration;
+                                if(checkTime<=30000)//1090
+                                    duration = 3600.0*2.0;
+                                else
+                                    duration = 3600.0;
+			        DecimalFormat twoDForm = new DecimalFormat("#.##");
+                                System.out.println("what is the duration " + duration);
+			        query = "UPDATE posts SET post_endTime = \'" + time + "\' WHERE post_by =" + id + " AND post_date = \'" + startString +"\'";
+			        st.executeUpdate(query);
+			        query = "UPDATE posts SET post_duration =" + twoDForm.format(duration/3600)+ " WHERE post_by =" + id + " AND post_date =\'" + startString +"\'";
+			        System.out.println(query);
+			        st.executeUpdate(query);
+			        query = "UPDATE users SET user_status = 0 WHERE user_name = \'" + userID + "\'";
+                                st.executeUpdate(query);
+                                return duration/3600;
+			     }
+			     else{
+				JOptionPane.showMessageDialog(null, "You are not logged in " );
+			        return -1;
+			     }
+                       }
+                       else
+                       {
+                          JOptionPane.showMessageDialog(null, "Nahhh...It's not 8:00pm yet." );
+                          return -1;
+                       }
 
 		}
 
@@ -161,11 +193,10 @@ public class DBConnect {
 				query = "SELECT * FROM users WHERE user_name = \'" + names2[i] + "\'";
 				rs = st.executeQuery(query);
 				rs.next();
-                id = rs.getInt("user_id");
-                date2 = rs.getString("user_date");
-                query = "UPDATE posts SET post_content = \'" + descriptions2[i] + "\',post_sub = " + subID +" WHERE post_by =" + id + " AND post_date = \'" + date2.substring(0,19) + "\'" ;
-                st.executeUpdate(query);
-
+                                id = rs.getInt("user_id");
+                                date2 = rs.getString("user_date");
+                                query = "UPDATE posts SET post_content = \'" + descriptions2[i] + "\',post_sub = " + subID +" WHERE post_by =" + id + " AND post_date = \'" + date2.substring(0,19) + "\'" ;
+                                st.executeUpdate(query);
 			}
 
 
@@ -179,7 +210,18 @@ public class DBConnect {
 		   int stat = rs.getInt("user_status");
 		   return stat;
 	   }
+           public String[] getFullName(String[] userNames)throws SQLException{
 
+                  String query;
+                  String[] fullNames = new String[userNames.length];
+                  for(int i=0;i<userNames.length;i++){
+                     query = "SELECT * FROM users WHERE user_name = \'" + userNames[i] + "\'";
+                     rs = st.executeQuery(query);
+		     rs.next();
+                     fullNames[i] = rs.getString("user_fullname");
+                  }
+                  return fullNames;
+           }
 
 
 }

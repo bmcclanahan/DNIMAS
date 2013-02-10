@@ -32,8 +32,9 @@ public class studySessionDescription extends javax.swing.JFrame {
     int endHourNum;
     int endMinNum;
     descriptionConfirmation dc1;
+    DBConnect dataGiver;
     /** Creates new form studySessionDescription */
-    public studySessionDescription(int option2,int option22, int current, int number, String[] descriptionsS2,String[] namesS2,String[] passwordsS2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String fileName) {
+    public studySessionDescription(int option2,int option22, int current, int number, String[] descriptionsS2,String[] namesS2,String[] passwordsS2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String fileName,DBConnect dataGiv) {
         super("Study Session Description");
         initComponents();
         file = fileName;
@@ -46,10 +47,11 @@ public class studySessionDescription extends javax.swing.JFrame {
 	option12 = option22;
 	currentStudent = current;
 	numberOfStudents = number;
+        dataGiver = dataGiv; 
 	description.setLineWrap(true);
 	description.setWrapStyleWord(true);
 	int limit;
-
+        
 	if(option != 0)
 	{
 	   descriptionS = new String[number];
@@ -73,6 +75,19 @@ public class studySessionDescription extends javax.swing.JFrame {
 	   namesS[i] = namesS2[i];
 	   passwordsS[i] = passwordsS2[i];
 	}
+        //add list of students successfully logged in
+        String[] fullName;
+        String studentsString = "";
+        try{
+           fullName = dataGiver.getFullName(namesS2);
+           for(int i=0;i<fullName.length;i++){
+              studentsString = studentsString + fullName[i] + "\n";
+           }
+           loggedInStudents.setText(studentsString);
+           loggedInStudents.setEditable(false);
+        }catch(Exception E){
+           JOptionPane.showMessageDialog(null, "Could not fetch full name from database" + E);
+        }
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
  	setResizable(false);
     }
@@ -86,6 +101,8 @@ public class studySessionDescription extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         names = new javax.swing.JTextField();
@@ -97,6 +114,13 @@ public class studySessionDescription extends javax.swing.JFrame {
         skip = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         passwords = new javax.swing.JPasswordField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        loggedInStudents = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,63 +153,78 @@ public class studySessionDescription extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 10));
         jLabel4.setText("*click red 'x' at top right corner to cancel");
 
+        loggedInStudents.setColumns(20);
+        loggedInStudents.setRows(5);
+        jScrollPane3.setViewportView(loggedInStudents);
+
+        jLabel5.setText("Students Successfully Logged In");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(103, 103, 103)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(names, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                    .addComponent(passwords))
-                .addContainerGap(107, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(122, 122, 122)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                                .addComponent(skip, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(scrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))))
-                .addGap(74, 74, 74))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(82, Short.MAX_VALUE)
+                                .addGap(51, 51, 51)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(51, 51, 51)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(names, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                            .addComponent(passwords)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(87, 87, 87)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(skip, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(147, 147, 147)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(105, 105, 105)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
+                .addContainerGap(346, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(names, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(names, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(passwords, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(passwords, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(98, 98, 98)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(submit)
                     .addComponent(skip))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addContainerGap())
+                .addGap(19, 19, 19)
+                .addComponent(jLabel4))
         );
 
         pack();
@@ -199,7 +238,7 @@ public class studySessionDescription extends javax.swing.JFrame {
 	           String tempPassword = passwords.getText();
 		   String comparePassword;
 	           int checkRedundant = 0;
-	           DBConnect dataGiver = new DBConnect();
+	           
 		   try{
 			     for(int i=0;i<currentStudent;i++)
 			     {
@@ -207,7 +246,7 @@ public class studySessionDescription extends javax.swing.JFrame {
 			    	 if(namesS[i].equals(names.getText()) && option12 != 1)
 			    	    checkRedundant = 1;
 			     }
-			     tempPassword = hash.sha1(tempPassword);
+			     //tempPassword = hash.sha1(tempPassword);
 			     comparePassword = dataGiver.getDataLog(tempUserName);
 			     int loggedIn = dataGiver.checkLogIn(tempUserName);
 			     if(tempPassword.equals(comparePassword) && checkRedundant == 0 && loggedIn == 1)
@@ -220,7 +259,7 @@ public class studySessionDescription extends javax.swing.JFrame {
 				        descriptionS[currentStudent] = description.getText();
 			            if(currentStudent < numberOfStudents)
 			            {
-			               studySessionDescription s = new studySessionDescription(0,0,currentStudent+1,numberOfStudents,descriptionS,namesS,passwordsS,beginHourNum,beginMinNum,endHourNum,endMinNum,new descriptionConfirmation(),file);
+			               studySessionDescription s = new studySessionDescription(0,0,currentStudent+1,numberOfStudents,descriptionS,namesS,passwordsS,beginHourNum,beginMinNum,endHourNum,endMinNum,new descriptionConfirmation(),file,dataGiver);
 		                   s.setVisible(true);
 		                   dispose();
 		  	            }
@@ -279,7 +318,7 @@ public class studySessionDescription extends javax.swing.JFrame {
          int n = JOptionPane.showConfirmDialog(this,"Are you sure you want to submit","Confirmation",JOptionPane.YES_NO_OPTION);
          if(n==0){
              if(currentStudent < numberOfStudents){
-                studySessionDescription s = new studySessionDescription(0,0,currentStudent,numberOfStudents-1,descriptionS,namesS,passwordsS,beginHourNum,beginMinNum,endHourNum,endMinNum,new descriptionConfirmation(),file);
+                studySessionDescription s = new studySessionDescription(0,0,currentStudent,numberOfStudents-1,descriptionS,namesS,passwordsS,beginHourNum,beginMinNum,endHourNum,endMinNum,new descriptionConfirmation(),file,dataGiver);
                 s.setVisible(true);
                 dispose();
 	     }
@@ -329,7 +368,12 @@ public class studySessionDescription extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea loggedInStudents;
     private javax.swing.JTextField names;
     private javax.swing.JPasswordField passwords;
     private java.awt.ScrollPane scrollPane1;

@@ -32,7 +32,8 @@ public class groupCount extends JFrame{
 			      int x = Integer.parseInt(holder)-1;
 			      if(x+1 > 0)
 			      {
-				      studySessionDescription s = new studySessionDescription(0,0,0,x,new String[0],new String[0],new String[0],0,0,0,0,new descriptionConfirmation(),"");
+                                      DBConnect dataGiver = new DBConnect();
+				      studySessionDescription s = new studySessionDescription(0,0,0,x,new String[0],new String[0],new String[0],0,0,0,0,new descriptionConfirmation(),"",dataGiver);
 				      s.setVisible(true);
 				      dispose();
 			      }

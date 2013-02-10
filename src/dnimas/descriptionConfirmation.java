@@ -290,7 +290,8 @@ public class descriptionConfirmation extends javax.swing.JFrame {
 
     private void addEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEntryActionPerformed
         // TODO add your handling code here:
-        studySessionDescription s = new studySessionDescription(0,2,names.length,names.length,descriptions,names,passwords,beginHourNum,beginMinNum,endHourNum,endMinNum,dc,file);
+        DBConnect dataGiver = new DBConnect();
+        studySessionDescription s = new studySessionDescription(0,2,names.length,names.length,descriptions,names,passwords,beginHourNum,beginMinNum,endHourNum,endMinNum,dc,file,dataGiver);
 	s.setVisible(true);
     }//GEN-LAST:event_addEntryActionPerformed
 

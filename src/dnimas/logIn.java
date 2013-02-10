@@ -15,9 +15,10 @@ import java.text.DecimalFormat;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.awt.*;
-import java.awt.event.*;
 import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author b.mcclanahan
@@ -37,7 +38,7 @@ public class logIn extends javax.swing.JFrame {
 		   }
 		   time(double t,String s,String s2)
 		   {
-		      theTime = t;
+		          theTime = t;
 			  theTimeS = s;
 			  theTimeS2 = s2;
 		   }
@@ -53,6 +54,7 @@ public class logIn extends javax.swing.JFrame {
 
 			// Send request
 			DatagramSocket socket = new DatagramSocket();
+                        socket.setSoTimeout(30000);
 			InetAddress address = InetAddress.getByName(serverName);
 			byte[] buf = new NtpMessage().toByteArray();
 			DatagramPacket packet =
@@ -66,14 +68,18 @@ public class logIn extends javax.swing.JFrame {
 			packet = new DatagramPacket(buf, buf.length);
 			socket.receive(packet);
 			// Process response
+
 			NtpMessage msg = new NtpMessage(packet.getData());
 			socket.close();
 			time info = new time(msg.originateTimestamp,msg.toString(),msg.toString2());
 			return  info;
 			}
 			catch(Exception e){
-            	           JOptionPane.showMessageDialog(null, "Could not connect to ntp server");
-                           return new time();
+            	           JOptionPane.showMessageDialog(null, "Could not connect to ntp server. Please make sure the system time is correct.");
+                           Date systemTime = new Date();
+                           SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+                           //This may cause a bug 
+                           return new time(systemTime.getTime()/1000,formatter.format(systemTime),formatter.format(systemTime));
 
 			}
 
@@ -108,13 +114,13 @@ public class logIn extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel1.setText("DNIMAS Study Session Log In/Out");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel2.setText("username: ");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel3.setText("password: ");
 
         username.addActionListener(new java.awt.event.ActionListener() {
@@ -148,33 +154,35 @@ public class logIn extends javax.swing.JFrame {
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
+            .addGroup(panel1Layout.createSequentialGroup()
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                        .addGap(68, 68, 68)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE))
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(panel1Layout.createSequentialGroup()
-                                        .addComponent(b1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                                        .addComponent(b2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(54, 54, 54))
-            .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(178, 178, 178)
-                .addComponent(b3, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(188, Short.MAX_VALUE))
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE))
+                                    .addGroup(panel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(panel1Layout.createSequentialGroup()
+                                                .addComponent(b1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                                                .addComponent(b2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(56, 56, 56))
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addGap(178, 178, 178)
+                        .addComponent(b3, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,22 +237,29 @@ public class logIn extends javax.swing.JFrame {
 	      DBConnect connect = new DBConnect();
 	      time timeInfo = getTime("64.90.182.55");
               try{
-            	 passwordString = hash.sha1(passwordString);
+            	     //passwordString = hash.sha1(passwordString);
 	             String password2 = dataGiver.getDataLog(usernameString);
 	             if(passwordString.equals(password2))
 	             {
 	            	 try{
 	            	     String test = connect.logIn(usernameString, time.theTimeS2,time.theTime);
-		                 if(!test.equals("fail"))
+		                 if(test.equals("success"))
                                  {
 		                	 JOptionPane.showMessageDialog(null, "You have successfully logged in at " + time.theTimeS);
                                          username.setText("");
                                          password.setText("");
 
                                  }
-		                 else
-		                	 JOptionPane.showMessageDialog(null, "You are already logged in.");
-
+		                 else if(test.equals("fail"))
+                                 {
+                                     JOptionPane.showMessageDialog(null, "You are already logged in.");
+                                     username.setText("");
+                                     password.setText("");
+                                 }
+                                 else{
+                                    username.setText("");
+                                    password.setText("");
+                                 }
 	                 }
 	                 catch(Exception ext){
 		                JOptionPane.showMessageDialog(null, "Unknown error" + ext);
@@ -252,7 +267,7 @@ public class logIn extends javax.swing.JFrame {
 
 	             }
 	             else
-			        JOptionPane.showMessageDialog(null, "Your username or password is incorrect " );
+		            JOptionPane.showMessageDialog(null, "Your username or password is incorrect " );
 
                  }
               catch(Exception ex){
@@ -269,26 +284,25 @@ public class logIn extends javax.swing.JFrame {
 	int action = 0;
 	try{
 	   String password2 = dataGiver.getDataLog(usernameString);
-           passwordString = hash.sha1(passwordString);
+           //passwordString = hash.sha1(passwordString);
 	   if(passwordString.equals(password2))
 	   {
 	      try{
 		  //get the day of the week
 		  Calendar cl = Calendar.getInstance();
-
 		  System.out.println(cl.getTime());
 		  int dayOfWeek = cl.get(Calendar.DAY_OF_WEEK);
 		  DecimalFormat myFormatter = new DecimalFormat("###.##");
 		  double total = connect.logOut(usernameString,passwordString, timeInfo.theTimeS2,timeInfo.theTime,dayOfWeek);
-		 
-		  JOptionPane.showMessageDialog(null, "You have successfully logged out at " + time.theTimeS + "\n Time of session: "+ myFormatter.format(total) + "hrs");
-				             //formatter.format(total) how to format numbers
+                  if(total != -1)
+		     JOptionPane.showMessageDialog(null, "You have successfully logged out at " + time.theTimeS + "\n Time of session: "+ myFormatter.format(total) + "hrs");
                   username.setText("");
                   password.setText("");
 	       }
 	       catch(Exception ext){
 	          JOptionPane.showMessageDialog(null, "You are not logged in 2 " + ext );
-
+                  username.setText("");
+                  password.setText("");
 	       }
 	    }
 	    else
