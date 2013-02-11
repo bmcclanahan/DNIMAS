@@ -52,7 +52,7 @@ import java.awt.event.*;
  * descriptionConfirmation dc1 - dc2
  * DBConnect dataGiver - dataGiv
  *
- * Methods:
+ * Class Methods:
  * SubmitActionPerformed  - Evoked when the submit button is pressed
  *    Inputs: the ActionEvent
  * SkipActionPerformed - Evoked when the skip button is pressed

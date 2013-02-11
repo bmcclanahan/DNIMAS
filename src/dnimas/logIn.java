@@ -20,8 +20,28 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 /**
+ * Class Description - used to log students in and out of study session
  *
- * @author b.mcclanahan
+ * Inputs to the constructor - none
+ *
+ * Class attributes:
+ *    String usernameString - used to hold the username that the user has entered in the UI
+ *    String passwordString - used to hold the password that the user has entered in the UI
+ *    DBConnect dataGiver - object used to communicate with the database
+ *
+ * Class Medthods
+ *    b3ActionPerformed - Evoked when the button with text Collaborative Learning  is pressed
+ *       Inputs - the ActionEvent
+ *    b2ActionPerformed - Evoked when the button with test Log In is pressed
+ *       Inputs - the ActionEvent
+ *    b1ActionPerformed - Evoked then the button with text Log out is pressed
+ *       Inputs - the ActionEvent
+ *
+ * Inner Classes:
+ *    time - class used to store the the current time
+ *    getTime - class used to retrieve the current time
+ *
+ * 
  */
 public class logIn extends javax.swing.JFrame {
     String usernameString;
@@ -47,7 +67,7 @@ public class logIn extends javax.swing.JFrame {
 		public static time getTime(String args)
 		{
 
-			try{
+	           try{
 			String serverName;
 
 		        serverName = args;
@@ -73,19 +93,19 @@ public class logIn extends javax.swing.JFrame {
 			socket.close();
 			time info = new time(msg.originateTimestamp,msg.toString(),msg.toString2());
 			return  info;
-			}
-			catch(Exception e){
-            	           JOptionPane.showMessageDialog(null, "Could not connect to ntp server. Please make sure the system time is correct.");
-                           Date systemTime = new Date();
-                           SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
-                           //This may cause a bug 
-                           return new time(systemTime.getTime()/1000,formatter.format(systemTime),formatter.format(systemTime));
+		   }
+		   catch(Exception e){
+            	        JOptionPane.showMessageDialog(null, "Could not connect to ntp server. Please make sure the system time is correct.");
+                        Date systemTime = new Date();
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+                        //This may cause a bug 
+                        return new time(systemTime.getTime()/1000,formatter.format(systemTime),formatter.format(systemTime));
 
-			}
+		   }
 
 		}
 
-    /** Creates new form NewJFrame */
+    
     public logIn() {
         super("DNIMAS Study Session Log In");
         initComponents();
@@ -220,29 +240,40 @@ public class logIn extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Action listener for b3.
+    //Displays the groupCount JFrame
     private void b3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b3ActionPerformed
         // TODO add your handling code here:
         groupCount s = new groupCount();
 	s.setVisible(true);
     }//GEN-LAST:event_b3ActionPerformed
 
+    //Does nothing
     private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameActionPerformed
 
+    //Action listener for the b1 button
     private void b1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b1ActionPerformed
+               
+               //get the username and password from the appropriate text fields
                usernameString = username.getText();
 	       passwordString = password.getText();
-
-	      DBConnect connect = new DBConnect();
+              //get the current time from an ntp server
 	      time timeInfo = getTime("64.90.182.55");
               try{
-            	     //passwordString = hash.sha1(passwordString);
+                     //get sha1 hash of the password entered by the user
+            	     passwordString = hash.sha1(passwordString);
+                     //get the password associated with the username entered by the user
 	             String password2 = dataGiver.getDataLog(usernameString);
+                     //if the user password is equal to the one entred the enter the following conditional
 	             if(passwordString.equals(password2))
 	             {
 	            	 try{
-	            	     String test = connect.logIn(usernameString, time.theTimeS2,time.theTime);
+                                //Attempt to log the student in
+	            	        String test = dataGiver.logIn(usernameString, time.theTimeS2,time.theTime);
+                                //If the log in is successfull tell the user it was a success and give them the time at which they have
+                                //been logged in
 		                 if(test.equals("success"))
                                  {
 		                	 JOptionPane.showMessageDialog(null, "You have successfully logged in at " + time.theTimeS);
@@ -250,12 +281,14 @@ public class logIn extends javax.swing.JFrame {
                                          password.setText("");
 
                                  }
+                                //If the log in was not successful and test is equal to fail then tell the user they are already logged in
 		                 else if(test.equals("fail"))
                                  {
                                      JOptionPane.showMessageDialog(null, "You are already logged in.");
                                      username.setText("");
                                      password.setText("");
                                  }
+                                //Else the user will be prompted that their is is to late to log in from the DBConnect class
                                  else{
                                     username.setText("");
                                     password.setText("");
@@ -270,46 +303,57 @@ public class logIn extends javax.swing.JFrame {
 		            JOptionPane.showMessageDialog(null, "Your username or password is incorrect " );
 
                  }
+              //If the password can not be retreived given the username then the user will be shown the message below 
               catch(Exception ex){
 
             	  JOptionPane.showMessageDialog(null, "Your username or password is incorrect " );
               }
     }//GEN-LAST:event_b1ActionPerformed
 
+    //Action listener for the b2 button
     private void b2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b2ActionPerformed
+        //get the username and password from the appropriate text fields
         usernameString = username.getText();
         passwordString = password.getText();
-	DBConnect connect = new DBConnect();
+	// get the current time
 	time timeInfo = getTime("64.90.182.55");
-	int action = 0;
+
 	try{
+           //get the password of the username associated with the user from the database
 	   String password2 = dataGiver.getDataLog(usernameString);
-           //passwordString = hash.sha1(passwordString);
+           //Compoute the sha1 hash of the password entered by the user
+           passwordString = hash.sha1(passwordString);
+           //if the password entered by the user is equal to the password associated with the username
+           //then enter the following conditional
 	   if(passwordString.equals(password2))
 	   {
 	      try{
 		  //get the day of the week
 		  Calendar cl = Calendar.getInstance();
-		  System.out.println(cl.getTime());
 		  int dayOfWeek = cl.get(Calendar.DAY_OF_WEEK);
 		  DecimalFormat myFormatter = new DecimalFormat("###.##");
-		  double total = connect.logOut(usernameString,timeInfo.theTimeS2,timeInfo.theTime,dayOfWeek);
+                  //Atempt to log the student out
+		  double total = dataGiver.logOut(usernameString,timeInfo.theTimeS2,timeInfo.theTime,dayOfWeek);
+                  //If the student was successfully logged out then tell them so. Otherwise the student will be notified
+                  //in the DBConnect class that it is to early to logOut or that they are not logged in
                   if(total != -1)
 		     JOptionPane.showMessageDialog(null, "You have successfully logged out at " + time.theTimeS + "\n Time of session: "+ myFormatter.format(total) + "hrs");
                   username.setText("");
                   password.setText("");
 	       }
 	       catch(Exception ext){
-	          JOptionPane.showMessageDialog(null, "You are not logged in 2 " + ext );
+	          JOptionPane.showMessageDialog(null, "There was an issue " + ext );
                   username.setText("");
                   password.setText("");
 	       }
 	    }
+           //If the passwords are not equal then show the user the following message
 	    else
                JOptionPane.showMessageDialog(null, "Your username or password is incorrect");
 
 
         }
+        //If there is an issure retreiving a password given the username then show the user the following message
         catch(Exception ex)
 	{
 	   JOptionPane.showMessageDialog(null, "Your username or password is incorrect " );
@@ -317,16 +361,7 @@ public class logIn extends javax.swing.JFrame {
 	}
     }//GEN-LAST:event_b2ActionPerformed
 
-    /**
-    * @param args the command line arguments
-    */
-   /* public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new logIn().setVisible(true);
-            }
-        });
-    }*/
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b1;
