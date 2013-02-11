@@ -20,6 +20,7 @@ import javax.swing.*;
  * @author b.mcclanahan
  */
 public class workUpload extends javax.swing.JFrame {
+   //Class attributes used to hold data for group submission
    String[] namesS;
    String[] passwordsS;
    String[] descriptionS;
@@ -39,10 +40,11 @@ public class workUpload extends javax.swing.JFrame {
     /** Creates new form workUpload */
     public workUpload(int option2,int option22, int current, int number, String[] descriptionsS2,String[] namesS2,String[] passwordsS2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String fileName) {
         super("Work Upload");
+        //code created by netbeans for interface
         initComponents();
+        //get data from the study session description JFrames
         file = fileName;
         dc1 = dc2;
-    	 //groupTime gt = new groupTime(descriptionS,namesS,passwordsS,new descriptionConfirmation());
     	option = option2;
     	option12 = option22;
     	beginHourNum = beginHourNum2;
@@ -53,8 +55,6 @@ public class workUpload extends javax.swing.JFrame {
    	option12 = option22;
    	currentStudent = current;
    	numberOfStudents = number;
-   	JPanel p1 = new JPanel();
-   	JPanel p2 = new JPanel();
    	workLink.setEditable(false); 
 	System.out.println(current);
         descriptionS = new String[current];
@@ -170,37 +170,48 @@ public class workUpload extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    //action listener for browse button. Simply allows user to select file
     private void browseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseActionPerformed
-        // TODO add your handling code here:
+
         JFileChooser chooser = new JFileChooser();
 	chooser.showOpenDialog(null);
 	f = chooser.getSelectedFile();
 	workLink.setText(f.getPath());
     }//GEN-LAST:event_browseActionPerformed
 
+    //action listener for upload. Makes connection, authenticates, and uploads file
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
         // TODO add your handling code here:
         try{
+           //make connection
 	   ftp.connect(connection.ipFTP,connection.portFTP);
+           //login to FTP server
 	   boolean test = ftp.login(connection.usernameFTP, connection.passwordFTP);
+           //Test to see if login is successful
 	   if(test)
 	   {
 	      System.out.println("Connected");
 	   }
 	   else
 	      System.out.println("failed");
+           //Set the file type to be uploaded
 	   ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+           //get input stream for the file and use that input stream to upload the file
 	   in = new FileInputStream(f.getPath());
 	   test = ftp.storeFile(f.getName(), in);
+           //test to see if the upload was successful
            if(test)
 	   {
 	      System.out.println("Uploaded");
 	   }
 	   else
 	      System.out.println("failed");
+           //close the input
 	   in.close();
+           //Get the filename of the file uploaded
 	   file = f.getName();
+           //If the the current instance of workupload was created in the studySessionDescription class, then option12 = 0 and the groupTime class should be called next.
+           //Else go to descriptionConfirmation JFrame
 	   if(option12 == 0 ){
 	      groupTime gt = new groupTime(descriptionS,namesS,passwordsS,new descriptionConfirmation(),f.getName());
               gt.setVisible(true);
@@ -216,7 +227,7 @@ public class workUpload extends javax.swing.JFrame {
 	   JOptionPane.showMessageDialog(null, "Error" + E);
 	}
     }//GEN-LAST:event_uploadActionPerformed
-
+    //action listener for the skip button. Just skips over the workupload JFrame. 
     private void skipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skipActionPerformed
         // TODO add your handling code here:
         if(option12 == 0 ){
