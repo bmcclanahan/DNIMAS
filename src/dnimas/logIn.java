@@ -24,9 +24,9 @@ import java.text.SimpleDateFormat;
  * @author b.mcclanahan
  */
 public class logIn extends javax.swing.JFrame {
-     String usernameString;
-     String passwordString;
-     DBConnect dataGiver = new DBConnect();
+    String usernameString;
+    String passwordString;
+    DBConnect dataGiver = new DBConnect();
     public  static class time{
 		   public static double  theTime;
 		   public static String  theTimeS;
@@ -293,7 +293,7 @@ public class logIn extends javax.swing.JFrame {
 		  System.out.println(cl.getTime());
 		  int dayOfWeek = cl.get(Calendar.DAY_OF_WEEK);
 		  DecimalFormat myFormatter = new DecimalFormat("###.##");
-		  double total = connect.logOut(usernameString,passwordString, timeInfo.theTimeS2,timeInfo.theTime,dayOfWeek);
+		  double total = connect.logOut(usernameString,timeInfo.theTimeS2,timeInfo.theTime,dayOfWeek);
                   if(total != -1)
 		     JOptionPane.showMessageDialog(null, "You have successfully logged out at " + time.theTimeS + "\n Time of session: "+ myFormatter.format(total) + "hrs");
                   username.setText("");
