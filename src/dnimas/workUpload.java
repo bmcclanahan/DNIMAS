@@ -16,8 +16,62 @@ import org.apache.commons.net.ftp.FTPClient;
 import javax.swing.*;
  
 /**
+ * Class description: This class allows students to upload work to an FTP server
  *
- * @author b.mcclanahan
+ * Inputs to constructor:
+ * int option2 - A JFrame reference which is not does not effect operations performed in this class
+ *
+ * int option22 - A JFrame reference which is used to determine what JFrame should be shown after this one
+ *
+ * int current - Indicates the index of the user currently using the instance of this class to submit
+ *               his or her information
+ * int number - The total number of students in the group
+ *
+ * String[] descriptionsS2 - array of descriptions submitted by each group member
+ *
+ * String[] namesS2 - array of the usernames of the group members
+ *
+ * String[] passwords - array of the passwords of the group members
+ *
+ * int beginHourNum2, beginMinNum2, endHourNum2, endMinNum2 - beginning and ending hour and minute of group submission
+ *
+ * descriptionConfirmation dc2 - Instance of the descriptionConfirmation class currently displayed. Used to destroy the current instance when information
+ *                               needs to be updated
+ *
+ * String[] fileName - array of filenames for the work which has been uploaded by the group
+ *
+ * DBConnect dataGiver - Instance of DBConnect class. Used to access the database
+ *
+ * Class Attributes: Most attributes are set by arguments from the constructor. The attributes that are set from arguments of the constructor can be defined by the values that are used to set them.
+ * So refer to the description of the constructor inputs to understand the how the attribute is used.
+ *
+ * String[] namesS - namesS2
+ * String[] passwordsS - passwordsS2
+ * String[] descriptionS - descriptionsS2
+ * String[] file - fileName
+ * int currentStudent - current
+ * int numberOfStudens -  number
+ * int option - option2
+ * int option12 - option22
+ * int beginHourNum - beginHoutNum2
+ * int beginMinNum - beginMinNum2
+ * int endHourNum - endHourNum2
+ * int endMinNum - endMinNum2
+ * descriptionConfirmation dc1 - dc2
+ * FileInputStream in- Input stream for the file to be uploaded
+ * FTPClient ftp- class instance used to connect to the FTP server and upload work
+ * File f - class instance to hold data for the file selected to be uploded
+ * 
+ * Methods:
+ * SubmitActionPerformed  - Evoked when the submit button is pressed
+ *    Inputs: the ActionEvent
+ * SkipActionPerformed - Evoked when the skip button is pressed
+ *    Inputs: the ActionEvent
+ * UploadActionPerformed  - Evoked when the upload button is pressed
+ *    Inputs: the ActionEvent
+ *
+ * BrowseActionPerformed - Evoked then the browse button is pressed
+ *    Inputs: the ActionEvent
  */
 public class workUpload extends javax.swing.JFrame {
    //Class attributes used to hold data for group submission
@@ -229,7 +283,7 @@ public class workUpload extends javax.swing.JFrame {
     }//GEN-LAST:event_uploadActionPerformed
     //action listener for the skip button. Just skips over the workupload JFrame. 
     private void skipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skipActionPerformed
-        // TODO add your handling code here:
+        //If option12 equals zero then show the groupTime JFrame. Otherwise show the descriptionConfirmation JFrame 
         if(option12 == 0 ){
 	   groupTime gt = new groupTime(descriptionS,namesS,passwordsS,new descriptionConfirmation(),file);
            gt.setVisible(true);
@@ -243,16 +297,7 @@ public class workUpload extends javax.swing.JFrame {
 	}
     }//GEN-LAST:event_skipActionPerformed
 
-    /**
-    * @param args the command line arguments
-    */
-   /* public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new workUpload().setVisible(true);
-            }
-        });
-    }*/
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browse;
