@@ -27,7 +27,7 @@ public class descriptionConfirmation extends javax.swing.JFrame {
     String[] descriptions;
     String[] passwords;
     String[] overallDescription;
-    String file;
+    String[] file;
     int beginHourNum;
     int beginMinNum;
     int endHourNum;
@@ -85,7 +85,7 @@ public class descriptionConfirmation extends javax.swing.JFrame {
 
     }
     /** Creates new form descriptionConfirmation */
-    public descriptionConfirmation(String[] names2, String[] descriptions2,String[] passwords2,int beginHourNum2,int beginMinNum2,int endHourNum2, int endMinNum2,String fileName) {
+    public descriptionConfirmation(String[] names2, String[] descriptions2,String[] passwords2,int beginHourNum2,int beginMinNum2,int endHourNum2, int endMinNum2,String[] fileName) {
         super("Description Confirmation");
         initComponents();
         file = fileName;
@@ -106,9 +106,9 @@ public class descriptionConfirmation extends javax.swing.JFrame {
 	   descriptions[i] = descriptions2[i];
 	   passwords[i] = passwords2[i];
 
-           theString = theString +  "Username "+ (i+1) +":" +names[i] + "\n";
+           theString = theString +  "Username "+ (i+1) +":" +names[i] + "\n\n";
 
-	   theString = theString + "Description "+ (i+1) +":" + descriptions[i] + "\n\n";
+	   theString = theString + "Description "+ (i+1) +":" + descriptions[i] + "\n\n\n";
 
 
 
@@ -116,7 +116,12 @@ public class descriptionConfirmation extends javax.swing.JFrame {
         }
 
 	theString = theString + "From: "+ String.format("%02d",beginHourNum) + ":" + String.format("%02d",beginMinNum) +"  To: " + String.format("%02d",endHourNum) +":" + String.format("%02d",endMinNum) + "\n\n";
-	theString = theString + "Work Uploaded:" + file;
+
+        theString = theString + "Work Uploaded: \n" ;
+        for(int i = 0;i<file.length;i++)
+        {
+           theString = theString + file[i] +"\n";
+        }
 	theTextArea.setText(theString); 
 	theTextArea.setEditable(false);
 	theTextArea.setLineWrap(true);
@@ -279,9 +284,14 @@ public class descriptionConfirmation extends javax.swing.JFrame {
 				   //get the day of the week
            Timestamp ts = new Timestamp((long) timeInfo.theTime);
 	   DBConnect submitGroup = new DBConnect();
+           
            try{
-	      submitGroup.topicSubmission(names, descriptions, passwords, beginHourNum, beginMinNum, endHourNum, endMinNum, timeInfo.theTimeS2);
-	      dispose();
+             
+                 submitGroup.topicSubmission(names, descriptions, passwords, beginHourNum, beginMinNum, endHourNum, endMinNum, timeInfo.theTimeS2);
+                 dispose();
+               
+
+	      
 	   }catch(Exception E){
 	      JOptionPane.showMessageDialog(null, "Error" + E);
            }

@@ -24,7 +24,7 @@ public class workUpload extends javax.swing.JFrame {
    String[] namesS;
    String[] passwordsS;
    String[] descriptionS;
-   String file;
+   String[] file;
    int currentStudent;
    int numberOfStudents;
    int option;
@@ -38,12 +38,12 @@ public class workUpload extends javax.swing.JFrame {
    FTPClient ftp = new FTPClient();
    File f;
     /** Creates new form workUpload */
-    public workUpload(int option2,int option22, int current, int number, String[] descriptionsS2,String[] namesS2,String[] passwordsS2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String fileName) {
+    public workUpload(int option2,int option22, int current, int number, String[] descriptionsS2,String[] namesS2,String[] passwordsS2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String[] fileName) {
         super("Work Upload");
         //code created by netbeans for interface
         initComponents();
         //get data from the study session description JFrames
-        file = fileName;
+        file = new String[fileName.length+1];
         dc1 = dc2;
     	option = option2;
     	option12 = option22;
@@ -209,11 +209,11 @@ public class workUpload extends javax.swing.JFrame {
            //close the input
 	   in.close();
            //Get the filename of the file uploaded
-	   file = f.getName();
+	   file[file.length-1] = f.getName();
            //If the the current instance of workupload was created in the studySessionDescription class, then option12 = 0 and the groupTime class should be called next.
            //Else go to descriptionConfirmation JFrame
 	   if(option12 == 0 ){
-	      groupTime gt = new groupTime(descriptionS,namesS,passwordsS,new descriptionConfirmation(),f.getName());
+	      groupTime gt = new groupTime(descriptionS,namesS,passwordsS,new descriptionConfirmation(),file);
               gt.setVisible(true);
               dispose();
 	   }

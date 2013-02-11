@@ -18,7 +18,7 @@ package dnimas;
 public class editWhichStudent extends javax.swing.JFrame {
     int studentEdit;
     int range;
-    String file;
+    String[] file;
     String[] names;
     String[] descriptions;
     String[] passwords;
@@ -28,7 +28,7 @@ public class editWhichStudent extends javax.swing.JFrame {
     int endMinNum;
     descriptionConfirmation dc;
     /** Creates new form editWhichEntry */
-    public editWhichStudent(String[] descriptions2,String[] names2,String[] passwords2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String fileName) {
+    public editWhichStudent(String[] descriptions2,String[] names2,String[] passwords2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String[] fileName) {
         super("Which Entry?");
         initComponents();
         file = fileName;

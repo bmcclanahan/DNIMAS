@@ -22,7 +22,7 @@ public class studySessionDescription extends javax.swing.JFrame {
     String[] namesS;
     String[] passwordsS;
     String[] descriptionS;
-    String file;
+    String[] file;
     int currentStudent;
     int numberOfStudents;
     int option;
@@ -34,7 +34,7 @@ public class studySessionDescription extends javax.swing.JFrame {
     descriptionConfirmation dc1;
     DBConnect dataGiver;
     /** Creates new form studySessionDescription */
-    public studySessionDescription(int option2,int option22, int current, int number, String[] descriptionsS2,String[] namesS2,String[] passwordsS2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String fileName,DBConnect dataGiv) {
+    public studySessionDescription(int option2,int option22, int current, int number, String[] descriptionsS2,String[] namesS2,String[] passwordsS2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String[] fileName,DBConnect dataGiv) {
         super("Study Session Description");
         initComponents();
         file = fileName;
@@ -75,6 +75,7 @@ public class studySessionDescription extends javax.swing.JFrame {
 	   namesS[i] = namesS2[i];
 	   passwordsS[i] = passwordsS2[i];
 	}
+
         //add list of students successfully logged in
         String[] fullName;
         String studentsString = "";
@@ -246,7 +247,7 @@ public class studySessionDescription extends javax.swing.JFrame {
 			    	 if(namesS[i].equals(names.getText()) && option12 != 1)
 			    	    checkRedundant = 1;
 			     }
-			     //tempPassword = hash.sha1(tempPassword);
+			     tempPassword = hash.sha1(tempPassword);
 			     comparePassword = dataGiver.getDataLog(tempUserName);
 			     int loggedIn = dataGiver.checkLogIn(tempUserName);
 			     if(tempPassword.equals(comparePassword) && checkRedundant == 0 && loggedIn == 1)

@@ -20,14 +20,14 @@ public class groupTime extends javax.swing.JFrame {
     String[] pass;
     String[] descrip;
     String[] names;
-    String file;
+    String[] file;
     int beginHourNum;
     int beginMinNum;
     int endHourNum;
     int endMinNum;
     descriptionConfirmation dc;
     /** Creates new form groupTime */
-    public groupTime(String[] descriptions2,String[] names2,String[] passwords2,descriptionConfirmation dc2,String fileName) {
+    public groupTime(String[] descriptions2,String[] names2,String[] passwords2,descriptionConfirmation dc2,String[] fileName) {
         super("Time of Session");
         initComponents();
         file = fileName;
