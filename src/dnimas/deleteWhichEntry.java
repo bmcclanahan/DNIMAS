@@ -12,8 +12,41 @@
 package dnimas;
 
 /**
+ * Class Description - This class gets the index of a student entry to be modified and then creats an instance of the
+ * studySessionDescription class to change it.
  *
- * @author b.mcclanahan
+ * Arguments of the constructor -
+ * String[] descriptions2 - array of descriptions submitted by each group member
+ *
+ * String[] names2 - array of the usernames of the group members
+ *
+ * String[] passwords2 - array of the passwords of the group members
+ *
+ * int beginHourNum2, beginMinNum2, endHourNum2, endMinNum2 - beginning and ending hour and minute of group submission
+ *
+ * descriptionConfirmation dc2 - Instance of the descriptionConfirmation class currently displayed. Used to destroy the current instance when information
+ *                               needs to be updated
+ *
+ * String[] fileName - array of filenames for the work which has been uploaded by the group
+ *
+ * Class Attributes: Most attributes are set by arguments from the constructor. The attributes that are set from arguments of the constructor can be defined by the values that are used to set them.
+ * So refer to the description of the constructor inputs to understand the how the attribute is used.
+ *
+ * String[] names - namesS2
+ * String[] passwords - passwordsS2
+ * String[] descriptions - descriptionsS2
+ * String[] file - fileName
+ * int beginHourNum - beginHoutNum2
+ * int beginMinNum - beginMinNum2
+ * int endHourNum - endHourNum2
+ * int endMinNum - endMinNum2
+ * descriptionConfirmation dc1 - dc2
+ * int studentEdit - the index of the student to be deleted
+ * int range - the number of students in the group
+ *
+ * Class Methods:
+ * submitActionPerformed - Action listener for the submit button
+ *    Inputs - the ActionEvent
  */
 public class deleteWhichEntry extends javax.swing.JFrame {
     int studentEdit;
@@ -31,6 +64,7 @@ public class deleteWhichEntry extends javax.swing.JFrame {
     public deleteWhichEntry(String[] descriptions2,String[] names2,String[] passwords2,int beginHourNum2, int beginMinNum2,int endHourNum2, int endMinNum2,descriptionConfirmation dc2,String[] fileName) {
         super("Which Entry?");
         initComponents();
+        //set class attributes
         file = fileName;
 	dc1 = dc2;
 	beginHourNum = beginHourNum2;
@@ -40,6 +74,7 @@ public class deleteWhichEntry extends javax.swing.JFrame {
 	descriptions = new String[names2.length];
 	names = new String[names2.length];
 	passwords = new String[names2.length];
+        //Generate list of indices for the students in the group
         String[] studentNums = new String[names2.length];
         Integer holder;
 	for(int i=0;i<names2.length;i++){
@@ -112,8 +147,9 @@ public class deleteWhichEntry extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Action listener for the submit button
+    //Get the index of the selected student and remove that students information from the passwords, descriptions, and names arrays
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
-        // TODO add your handling code here:
 
        int x = Integer.parseInt((String) studentSelection.getSelectedItem())-1;
        int f = 0;

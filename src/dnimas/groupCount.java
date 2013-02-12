@@ -6,8 +6,16 @@
 package dnimas;
 
 /**
+ * Class Desription - this class just gets the number of students in the group and creates a studySessionDescription class Instance
  *
- * @author b.mcclanahan
+ * Inputs to the constructor - none
+ *
+ * Class attributes:
+ * JTextField numberArea - text field use to retrieve the number of students
+ *
+ * Class Methods: none
+ *
+ *
  */
 import javax.swing.*;
 import java.awt.*;
@@ -20,16 +28,21 @@ public class groupCount extends JFrame{
 
 	   super("Number of Students?");
 
+
 	   JLabel number = new JLabel("Enter the number of Students in Group.");
 	   numberArea = new JTextField(2);
 	   JButton numberButton = new JButton("Submit");
 
+           //Action listenter for the number button
 	   numberButton.addActionListener(new ActionListener() {
 		   @Override
 		   public void actionPerformed(ActionEvent e){
+                           //get the text from the numberArea
 			   String holder = numberArea.getText();
 			   try{
+                              //Convert string for the number of students to into an integer
 			      int x = Integer.parseInt(holder)-1;
+                              //If the users input is valid then move show the studySessinoDescription class
 			      if(x+1 > 0)
 			      {
                                       DBConnect dataGiver = new DBConnect();

@@ -9,7 +9,7 @@ package dnimas;
 
  * Class Description: This class is used for to make all queries and updates to the database
  *
- * Input to constructor: none
+ * Arguments of constructor: none
  *
  * Methods:
  *

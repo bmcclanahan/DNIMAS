@@ -19,14 +19,58 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.sql.Timestamp;
 /**
+ * Class Description - This class provides an interface and access to other classes which allow students to change session time
+ * add student to group submission, delete a student from the group submission, edit a student submission, upload more work, and
+ * submit the group submission
  *
- * @author b.mcclanahan
+ *
+ * Arguments of the constructor -
+ * String[] descriptions2 - array of descriptions submitted by each group member
+ *
+ * String[] names2 - array of the usernames of the group members
+ *
+ * String[] passwords2 - array of the passwords of the group members
+ *
+ * int beginHourNum2, beginMinNum2, endHourNum2, endMinNum2 - beginning and ending hour and minute of group submission
+ *
+ * String[] fileName - array of filenames for the work which has been uploaded by the group
+ *
+ * Class Attributes: Most attributes are set by arguments from the constructor. The attributes that are set from arguments of the constructor can be defined by the values that are used to set them.
+ * So refer to the description of the constructor inputs to understand the how the attribute is used.
+ *
+ * String[] names - namesS2
+ * String[] passwords - passwordsS2
+ * String[] descriptions - descriptionsS2
+ * String[] file - fileName
+ * int beginHourNum - beginHoutNum2
+ * int beginMinNum - beginMinNum2
+ * int endHourNum - endHourNum2
+ * int endMinNum - endMinNum2
+ * descriptionConfirmation dc - a handle to the instance of this class
+ *
+ *
+ * Methods:
+ *    editTimeActionPerformed - action listener for the editTime button
+ *       Inputs - the ActionEvent
+ *    uploadWorkActionActionPerformed - action listener for the uploadWork button
+ *       Inputs - the ActionEvent
+ *    submitActionPerformed - action listener for the submit button
+ *       Inputs - the ActionEvent
+ *    editEntryActionPerformed - action listener for the editEntry button
+ *       Inputs - the ActionEvent
+ *    addEntryActionPerformed - action listener for the addEntry button
+ *       Inputs - the ActionEvent
+ *    deleteEntryActionPerformed - action listener for the deleteEntry button
+ *       Inputs - the ActionEvent
+ * 
+ * Inner Classes:
+ *   time - class used to store the the current time
+ *   getTime - class used to retrieve the current time
  */
 public class descriptionConfirmation extends javax.swing.JFrame {
     String[] names;
     String[] descriptions;
     String[] passwords;
-    String[] overallDescription;
     String[] file;
     int beginHourNum;
     int beginMinNum;
@@ -88,19 +132,19 @@ public class descriptionConfirmation extends javax.swing.JFrame {
     public descriptionConfirmation(String[] names2, String[] descriptions2,String[] passwords2,int beginHourNum2,int beginMinNum2,int endHourNum2, int endMinNum2,String[] fileName) {
         super("Description Confirmation");
         initComponents();
+        //Set the class attributes
         file = fileName;
 	beginHourNum = beginHourNum2;
 	beginMinNum = beginMinNum2;
 	endHourNum = endHourNum2;
 	endMinNum = endMinNum2;
 	dc = this;
-	int[] rows = new int[names2.length];
-	   //	JLabel[] namesLabel = new JLabel[names2.length];
-		//JTextArea theTextArea = new JTextArea(5,20);
 	String theString = "";
         names = new String[names2.length];
 	descriptions = new String[names2.length];
 	passwords = new String[names2.length];
+
+        //Display usernames, passwords, descriptions, group time and work uploaded in the text area
 	for(int i =0; i<names.length; i++){
 	   names[i] = names2[i];
 	   descriptions[i] = descriptions2[i];
@@ -109,9 +153,6 @@ public class descriptionConfirmation extends javax.swing.JFrame {
            theString = theString +  "Username "+ (i+1) +":" +names[i] + "\n\n";
 
 	   theString = theString + "Description "+ (i+1) +":" + descriptions[i] + "\n\n\n";
-
-
-
 
         }
 
@@ -264,40 +305,43 @@ public class descriptionConfirmation extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Action listener for the editTime button. Shows the groupTime JFrame
     private void editTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editTimeActionPerformed
         // TODO add your handling code here:
         groupTime gt = new groupTime(descriptions,names,passwords, dc,file);
 	gt.setVisible(true);
     }//GEN-LAST:event_editTimeActionPerformed
 
+    //Action listener for the uploadWork button. Shows the workUpload JFrame
     private void uploadWorkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadWorkActionPerformed
         // TODO add your handling code here:
         workUpload wu = new workUpload(0,2,names.length,0 ,descriptions,names,passwords,beginHourNum,beginMinNum,endHourNum,endMinNum,dc,file);
         wu.setVisible(true);
     }//GEN-LAST:event_uploadWorkActionPerformed
 
+    //Action listener for the submit button. Makes an entry into the topics table of the database for the group submission
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
-        // TODO add your handling code here:
+        //Ask user to confirm that they wish to make the submission
         int n = JOptionPane.showConfirmDialog(this,"Are you sure you want to submit","Confirmation",JOptionPane.YES_NO_OPTION);
+        //If the user confirms that he or she wishes to make the submission enter the following conditional
         if(n==0){
+           //Get the current time
            time timeInfo = getTime("64.90.182.55");
-				   //get the day of the week
-           Timestamp ts = new Timestamp((long) timeInfo.theTime);
+           //Make class instance of DBConnect to communicate with the database
 	   DBConnect submitGroup = new DBConnect();
            
            try{
-             
+                 //make the group submission and dispose of this instance of the description confirmation page
                  submitGroup.topicSubmission(names, descriptions, passwords, beginHourNum, beginMinNum, endHourNum, endMinNum, timeInfo.theTimeS2);
+                 JOptionPane.showMessageDialog(null, "The submission was successful");
                  dispose();
-               
-
-	      
 	   }catch(Exception E){
 	      JOptionPane.showMessageDialog(null, "Error" + E);
            }
         }
     }//GEN-LAST:event_submitActionPerformed
 
+    //Action listener for the addEntry button. Shows the studySessionDescription JFrame
     private void addEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEntryActionPerformed
         // TODO add your handling code here:
         DBConnect dataGiver = new DBConnect();
@@ -305,12 +349,14 @@ public class descriptionConfirmation extends javax.swing.JFrame {
 	s.setVisible(true);
     }//GEN-LAST:event_addEntryActionPerformed
 
+    //Action listener for the editEntry button. Shows the editWhichStudent JFrame
     private void editEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editEntryActionPerformed
         // TODO add your handling code here:
         editWhichStudent ews = new editWhichStudent(descriptions,names,passwords,beginHourNum,beginMinNum,endHourNum,endMinNum,dc,file);
 	ews.setVisible(true);
     }//GEN-LAST:event_editEntryActionPerformed
 
+    //Action listener for the deleteEntry button. Shows the deleteWhichEntry JFrame
     private void deleteEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteEntryActionPerformed
         // TODO add your handling code here:
         deleteWhichEntry ews = new deleteWhichEntry(descriptions,names,passwords,beginHourNum,beginMinNum,endHourNum,endMinNum,dc,file);

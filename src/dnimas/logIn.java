@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 /**
  * Class Description - used to log students in and out of study session
  *
- * Inputs to the constructor - none
+ * Arguments of the constructor - none
  *
  * Class attributes:
  *    String usernameString - used to hold the username that the user has entered in the UI

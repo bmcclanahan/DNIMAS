@@ -13,8 +13,30 @@ package dnimas;
 import javax.swing.*;
 
 /**
+ * Class description - class to get the beginning and ending time of the class group session
  *
- * @author b.mcclanahan
+ * Arguments of Constructor:
+ * String[] descriptions2 - array of descriptions submitted by each group member
+ *
+ * String[] names2 - array of the usernames of the group members
+ *
+ * String[] passwords2 - array of the passwords of the group members
+ *
+ *
+ * descriptionConfirmation dc2 - Instance of the descriptionConfirmation class currently displayed. Used to destroy the current instance when information
+ *                               needs to be updated
+ *
+ * String[] fileName - array of filenames for the work which has been uploaded by the group
+ *
+ * Class Attributes: Most attributes are set by an argument of the constructor. The attributes which are set by the arguments of the constructor can be defined by the value used to set them 
+ * So refer to the description of the inputs to understand the how the attribute is used.
+ *
+ * String[] names - names2
+ * String[] pass - passwords2
+ * String[] descrip - descriptions2
+ * String[] file - fileName
+ * descriptionConfirmation dc1 - dc2
+ * int beginHourNum2, beginMinNum2, endHourNum2, endMinNum2 - beginning and ending hour and minute of group submission
  */
 public class groupTime extends javax.swing.JFrame {
     String[] pass;
@@ -169,6 +191,8 @@ public class groupTime extends javax.swing.JFrame {
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
 		   try{
+                           //Get time from user and check to see if the time is within the accepatable range from 6 to 8
+                           // also check to see if the begin time and end time are logical
 			   beginHourNum = Integer.parseInt(beginHour.getText());
 			   beginMinNum = Integer.parseInt(beginMins.getText());
 			   endHourNum = Integer.parseInt(endHour.getText());

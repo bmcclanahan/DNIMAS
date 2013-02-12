@@ -10,7 +10,7 @@ import java.awt.event.*;
  * of work done while in the group. The class also takes information gathered for the
  * group submission and passes it to the next JFrame to be shown
  *
- * Inputs to constructor:
+ * Arguments of constructor:
  * int option2 - Indicates whether or not this class instance was created in an editWhichStudent class instance or a groupTime class instance
  *
  * int option22 - Indicates whether or not the instance of this class was created in an instance of the descriptionConfirmation class

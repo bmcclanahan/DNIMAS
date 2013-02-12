@@ -7,7 +7,8 @@ package dnimas;
 
 /**
  *
- * @author b.mcclanahan
+ * class description - Holds port numbers, ip addresses, user names, and user passwords to make connections to both the MySQL server and FTP server.
+ * the names of the variables are self explanatory
  */
 public class connection {
    public static String ipMySql = "localhost";

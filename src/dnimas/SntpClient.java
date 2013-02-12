@@ -7,7 +7,7 @@ package dnimas;
 
 /**
  *
- * @author b.mcclanahan
+ * Class description - Client program which fetches time from NTP server. Online code
  */
 import java.io.IOException;
 import java.net.DatagramPacket;

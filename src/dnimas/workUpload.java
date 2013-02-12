@@ -18,7 +18,7 @@ import javax.swing.*;
 /**
  * Class description: This class allows students to upload work to an FTP server
  *
- * Inputs to constructor:
+ * Arguments of the constructor:
  * int option2 - A JFrame reference which is not does not effect operations performed in this class
  *
  * int option22 - A JFrame reference which is used to determine what JFrame should be shown after this one

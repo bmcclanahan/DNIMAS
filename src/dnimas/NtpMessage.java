@@ -7,7 +7,7 @@ package dnimas;
 
 /**
  *
- * @author b.mcclanahan
+ * Class description - formats time received from NTP server. Online code. 
  */
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

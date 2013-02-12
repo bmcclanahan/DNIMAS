@@ -7,7 +7,7 @@ package dnimas;
 
 /**
  *
- * @author b.mcclanahan
+ * class description - gets the sha1 hash of a given string. Online code 
  */
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

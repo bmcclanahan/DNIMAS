@@ -7,7 +7,7 @@ package dnimas;
 
 /**
  *
- * @author b.mcclanahan
+ * Class description - Gets the MAC address of network interface currently in use. Online code 
  */
 import java.net.InetAddress;
 import java.net.NetworkInterface;
